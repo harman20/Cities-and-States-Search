@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<title>Token Based Api</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<title>State,District,Cities</title>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<style type="text/css">
+			
+			body
+			{
+				background: whitesmoke;
+				font-family: Calibri;
+			}
+			table
+			{
+				width: 100%;
+			}
+			.table-striped
+			{
+				background:blue;
+			}
+			th
+			{
+				font-size: 20px;
+			}
+			td
+			{
+				font-size: 20px;
+				width: 50%;
+			}
+			.cd
+			{
+				box-shadow:0px 0px 6px gray;
+				height: 200px;
+				border-radius: 10px;
+			}
+			.abc1
+			{
+				box-shadow:0px 0px 6px gray;
+				height: auto;
+				border-radius: 10px;
+			}
+			.abc2
+			{
+				box-shadow:0px 0px 6px gray;
+				height: auto;
+				border-radius: 10px;
+			}
+			.abc3
+			{
+				box-shadow:0px 0px 6px gray;
+				height: auto;
+				border-radius: 10px;
+			}
+			.text-primary
+			{
+				color:black !important;
+			}	
+			p
+			{
+				font-size: 15px;
+				margin: 10px;
+				text-align: center;
+				color:red;
+				font-family: Mali,cursive;
+			}
+
+		</style>
+		<script>
+			$(document).ready(function()
+			{
+				document.body.style.zoom = "80%";
+				$(".button1").attr("disabled",true);
+				$(".button2").attr("disabled",true);
+				$(".button3").attr("disabled",true);			
+				var content;
+				var content1=" ";
+				var content2=" ";
+				var content3=" ";
+				$.ajax({url:"https://indian-cities-api-nocbegfhqg.now.sh/cities",success:function(result)
+				{
+					content=result;
+					$(".button1").attr("disabled",false);
+					$(".button2").attr("disabled",false);
+					$(".button3").attr("disabled",false);
+					var a1=[];
+					var a2=[];
+					for(a in content)
+					{
+						a1.push(content[a].District);
+						a2.push(content[a].State);
+					}
+					$("#district").autocomplete(
+					{
+						source:a1
+					});
+					$("#state").autocomplete(
+					{
+						source:a2
+					});
+				}});
+				$(".button1").click(function()
+				{
+					content1+="<table class=' table-striped'><tr><th>City</th><th>State</th></tr>";
+					for(a in content)
+					{
+						content1+="<tr><td>"+content[a].City+"</td><td>"+content[a].State+"</td></tr>";
+					}
+					content1+="</table>";
+					$(".abc1").append(content1);
+				});
+				$(".button2").click(function()
+				{
+					$(".abc2").html("");
+					content2="";
+					var d=$("#state").val();
+					content2+=" <table class=' table-striped'><tr><th>State</th><th>City</th></tr>";
+					for(a in content)
+					{
+						if(content[a].State===d)
+						{
+							content2+="<tr><td>"+d+"</td><td>"+content[a].City+"</td></tr>";
+						}
+					}
+					content2+="</table>";
+					$(".abc2").append(content2);
+				});
+				$(".button3").click(function()
+				{
+					$(".abc3").html("");
+					content3="";
+					var e=$("#district").val();
+					content3+="<table class='table-striped'><tr><th>District</th><th>City</th></tr>";
+					for(a in content)
+					{
+						if(content[a].District===e)
+						{
+							content3+="<tr><td>"+e+"</td><td>"+content[a].City+"</td></tr>";
+						}
+					}
+					content3+="</table>";
+					$(".abc3").append(content3);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<h3 class="text-center " style="margin:0 !important;color:yellow;background:black;padding:20px;font-family: monospace;">
+				Indian Cities API Integration ! Ajax Enabled Presented By <span style='color:white'>Harmanjit Singh</span><span class="glyphicon glyphicon-signal"></span></h3><br/>
+				<br/>
+			<div class="row ">
+				<div class="col-md-4 cd">
+					<center><h2 class="text-primary">Show All</h2>
+					<p>Shows the list of all Cities.</p>
+					<br/>
+					<button class="btn btn-primary button1">Go</button></center>
+				</div>
+				<div class="col-md-4 cd">
+					<center><h2 class="text-primary">Search By State</h2>
+						<p>Shows the list of all Cities of the entered state</p>
+						<br/>
+						<label for="state">Enter the State</label>
+						<input type="text" name="state" id="state" required>
+						<button class="btn btn-primary button2">Go</button></center>
+				</div>
+				<div class="col-md-4 cd">
+					<center><h2 class="text-primary">Search By District</h2>
+						<p>Shows the list of all Cities of the entered District</p>
+						<br/>
+						<label for="district">Enter the District</label>
+						<input type="text" name="district" id="district" required>
+						<button class="btn btn-primary button3">Go</button></center>
+				</div>
+			</div>
+			<br/><br/>
+			<div class="row">
+				<div class="col-md-4 abc1">
+				</div>
+				<div class="col-md-4 abc2">
+				</div>
+				<div class="col-md-4 abc3">
+				</div> 
+			</div>
+		</div>
+	</body>
+</html>
